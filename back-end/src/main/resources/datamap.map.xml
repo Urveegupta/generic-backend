@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
+	 project-version="10">
+	<property name="defaultPackage" value="org.portal.db.entities"/>
+	<property name="defaultCatalog" value="mydb"/>
+	<db-entity name="form" catalog="mydb">
+		<db-attribute name="form_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="form_name" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="form_field" catalog="mydb">
+		<db-attribute name="field_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="field_name" type="VARCHAR" length="45"/>
+		<db-attribute name="field_type" type="VARCHAR" length="45"/>
+		<db-attribute name="form_id" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="input_type" type="VARCHAR" length="45"/>
+	</db-entity>
+	<db-entity name="leave" catalog="mydb">
+		<db-attribute name="email" type="VARCHAR" isMandatory="true" length="45"/>
+		<db-attribute name="end_date" type="DATE" length="10"/>
+		<db-attribute name="leave_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="reason" type="VARCHAR" length="255"/>
+		<db-attribute name="start_date" type="DATE" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="user" catalog="mydb">
+		<db-attribute name="create_time" type="TIMESTAMP" length="19"/>
+		<db-attribute name="email" type="VARCHAR" length="255"/>
+		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="32"/>
+		<db-attribute name="role_id" type="INTEGER" length="10"/>
+		<db-attribute name="user_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="user_name" type="VARCHAR" isMandatory="true" length="16"/>
+	</db-entity>
+	<obj-entity name="Form" className="org.portal.db.entities.Form" dbEntityName="form">
+		<obj-attribute name="formName" type="java.lang.String" db-attribute-path="form_name"/>
+	</obj-entity>
+	<obj-entity name="FormField" className="org.portal.db.entities.FormField" dbEntityName="form_field">
+		<obj-attribute name="fieldName" type="java.lang.String" db-attribute-path="field_name"/>
+		<obj-attribute name="fieldType" type="java.lang.String" db-attribute-path="field_type"/>
+		<obj-attribute name="inputType" type="java.lang.String" db-attribute-path="input_type"/>
+	</obj-entity>
+	<obj-entity name="Leave" className="org.portal.db.entities.Leave" dbEntityName="leave">
+		<obj-attribute name="email" type="java.lang.String" db-attribute-path="email"/>
+		<obj-attribute name="endDate" type="java.time.LocalDate" db-attribute-path="end_date"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="reason" type="java.lang.String" db-attribute-path="reason"/>
+		<obj-attribute name="startDate" type="java.time.LocalDate" db-attribute-path="start_date"/>
+	</obj-entity>
+	<obj-entity name="User" className="org.portal.db.entities.User" dbEntityName="user">
+		<obj-attribute name="createTime" type="java.time.LocalDateTime" db-attribute-path="create_time"/>
+		<obj-attribute name="email" type="java.lang.String" db-attribute-path="email"/>
+		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
+		<obj-attribute name="roleId" type="int" db-attribute-path="role_id"/>
+		<obj-attribute name="userName" type="java.lang.String" db-attribute-path="user_name"/>
+	</obj-entity>
+	<db-relationship name="formFields" source="form" target="form_field" toMany="true">
+		<db-attribute-pair source="form_id" target="form_id"/>
+	</db-relationship>
+	<db-relationship name="form" source="form_field" target="form">
+		<db-attribute-pair source="form_id" target="form_id"/>
+	</db-relationship>
+	<obj-relationship name="formFields" source="Form" target="FormField" deleteRule="Deny" db-relationship-path="formFields"/>
+	<obj-relationship name="form" source="FormField" target="Form" deleteRule="Nullify" db-relationship-path="form"/>
+</data-map>

@@ -1,0 +1,40 @@
+{
+  "forms": [
+      {
+        "form_id": 1,
+        "form_name": "leave",
+        "form_fields": [
+          {
+            "field_id": 1,
+            "field_name": "name",
+            "field_type": "String",
+            "input_type": "String"
+          },
+          {
+            "field_id": 2,
+            "field_name": "email",
+            "field_type": "String",
+            "input_type": "String"
+          },
+          {
+            "field_id": 3,
+            "field_name": "Start Date",
+            "field_type": "Date",
+            "input_type": "Date"
+          },
+          {
+            "field_id": 4,
+            "field_name": "End Date",
+            "field_type": "Date",
+            "input_type": "Date"
+          },
+          {
+            "field_id": 5,
+            "field_name": "Reason",
+            "field_type": "String",
+            "input_type": "String"
+          }
+        ]
+      }
+  ]
+}

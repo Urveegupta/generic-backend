@@ -1,0 +1,20 @@
+{
+  "STATUS": [
+    {
+      "id": 1,
+      "status": "NIL"
+    },
+    {
+      "id": 2,
+      "status": "Submitted"
+    },
+    {
+      "id": 3,
+      "status": "HOD Approved"
+    },
+    {
+      "id": 4,
+      "status": "HOD Rejected"
+    }
+  ]
+}
