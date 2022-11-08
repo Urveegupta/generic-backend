@@ -84,4 +84,12 @@ public class Dal {
         }
         return "Couldn't find status";
     }
+
+    public void addUser(String username, String email, String password){
+        User newUser = dbContext.newObject(User.class);
+        newUser.setUserName(username);
+        newUser.setEmail(email);
+        newUser.setPassword(password);
+        dbContext.commitChanges();
+    }
 }

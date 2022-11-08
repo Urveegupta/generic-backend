@@ -40,6 +40,11 @@ public class FlowEngine {
 //        app._conf.accessManager(Rbac::accessManager);
         app.before("/secure/*", new Rbac());
         app.post("login", new Login());
+        app.post("newUser", (ctx)->{
+            JSONObject obj = ctx.bodyAsClass(JSONObject.class);
+            dal.addUser(obj.get("name").toString(),obj.get("email").toString(),obj.get("password").toString());
+            ctx.result("User Added Successfully!");
+        });
 
         // add handlers for all forms in the portal
         List<JSONObject> list = dal.loadForms();
@@ -59,6 +64,7 @@ public class FlowEngine {
         // handler to fill out the form
         app.post(form.get("form_name")+"/"+ HandlerPaths.PATH_TO_FILL_FORM, (ctx)->{
             log.info("POST handler for filling out form: "+ form.get("form_name"));
+            // TODO: check if allowed
             // TODO: do
             ctx.result("Submitted Successfully!");
         });
@@ -76,10 +82,9 @@ public class FlowEngine {
         });
 
 //        // handler to update status
-//        app.post(form_name+"/"+SubmittedFormId+"/"+HandlerPaths.PATH_TO_UPDATE_FORM, (ctx) -> {
-//
-//        });
-
-        // handler to edit form
+        app.post(form_name+"/"+SubmittedFormId+"/"+HandlerPaths.PATH_TO_UPDATE_FORM, (ctx) -> {
+            //TODO: check if allowed
+            //TODO: do
+        });
     }
 }
