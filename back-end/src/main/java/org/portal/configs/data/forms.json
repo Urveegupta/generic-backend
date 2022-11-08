@@ -1,8 +1,8 @@
 {
-  "forms": [
+  "FORMS": [
       {
         "form_id": 1,
-        "form_name": "leave",
+        "form_name": "Leave",
         "form_fields": [
           {
             "field_id": 1,

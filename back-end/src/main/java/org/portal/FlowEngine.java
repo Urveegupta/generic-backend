@@ -2,13 +2,16 @@ package org.portal;
 
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.portal.configs.HandlerPaths;
-import org.portal.db.entities.Form;
+import org.portal.db.entities.SubmittedForm;
 import org.portal.handlers.Login;
 import org.portal.handlers.Rbac;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FlowEngine {
@@ -22,7 +25,7 @@ public class FlowEngine {
         this.dal = new Dal();
     }
 
-    public void start(){
+    public void start() throws IOException, ParseException {
         log.info(">Starting the portal flow engine");
 
         app._conf.addStaticFiles(cfg->{
@@ -38,28 +41,45 @@ public class FlowEngine {
         app.before("/secure/*", new Rbac());
         app.post("login", new Login());
 
-        // add handlers for all forms
-        List<Form> list = dal.loadForms();
-        for(Form form: list){
+        // add handlers for all forms in the portal
+        List<JSONObject> list = dal.loadForms();
+        for(JSONObject form: list){
             addFormHandlers(form);
+        }
+
+        // add handler for all submitted forms (going through workflow)
+        List<SubmittedForm> submittedList = dal.loadSubmittedForms();
+        for(SubmittedForm form: submittedList){
+            addSubmittedFormHandlers(form);
         }
     }
 
-    private void addFormHandlers(Form form){
+    private void addFormHandlers(JSONObject form){
 
         // handler to fill out the form
-        app.post(form.getFormName()+"/"+ HandlerPaths.PATH_TO_FILL_FORM, (ctx)->{
-            log.info("POST handler for filling out form: "+ form.getFormName());
+        app.post(form.get("form_name")+"/"+ HandlerPaths.PATH_TO_FILL_FORM, (ctx)->{
+            log.info("POST handler for filling out form: "+ form.get("form_name"));
             // TODO: do
             ctx.result("Submitted Successfully!");
         });
+    }
 
-        // handler to view status of own filled forms
-        app.get(form.getFormName()+"/"+ HandlerPaths.PATH_TO_VIEW_FORM, (ctx) -> {
-            log.info("GET handler to view status of own submitted forms");
-            // TODO: do
+    private void addSubmittedFormHandlers(SubmittedForm form) throws IOException, ParseException {
+        String form_name = dal.getFormName(form);
+        String SubmittedFormId = dal.getSubmittedFormId(form);
 
+        // handler to view status
+        app.get(form_name+"/"+SubmittedFormId,ctx -> {
+            //TODO: check if allowed
+            int status = form.getStatusId();
+            ctx.result(dal.loadStatusFromId(status));
         });
 
+//        // handler to update status
+//        app.post(form_name+"/"+SubmittedFormId+"/"+HandlerPaths.PATH_TO_UPDATE_FORM, (ctx) -> {
+//
+//        });
+
+        // handler to edit form
     }
 }
