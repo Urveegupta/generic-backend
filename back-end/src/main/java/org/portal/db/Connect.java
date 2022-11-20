@@ -26,12 +26,14 @@ public class Connect {
         JSONParser parser = new JSONParser();
         try {
             Object obj = parser.parse(new FileReader("config.json"));
+            System.out.println("file read");
             JSONObject jsonObject = (JSONObject)obj;
             URL = jsonObject.get("DB_URL").toString();
             USER = jsonObject.get("DB_USERNAME").toString();
             PASS = jsonObject.get("DB_PASSWORD").toString();
             log.info("Received DB credentials");
         } catch(Exception e) {
+            System.out.println(System.getProperty("user.dir"));
             log.info("Exception occured while reading db credentials");
             log.info(e.toString());
         }

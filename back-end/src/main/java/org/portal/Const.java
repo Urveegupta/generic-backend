@@ -19,7 +19,7 @@ public class Const {
     public static final String KEY_STATUS_NAME = "status";
 
     // file paths
-    static String rel_path = "src/main/java/org/portal/configs/data";
+    static String rel_path = "back-end/src/main/java/org/portal/configs/data/";
     public static final String ACTION_PATH = rel_path + "action.json";
     public static final String ROLE_PATH = rel_path + "actionPermission.json";
     public static final String STATUS_PATH = rel_path + "role.json";

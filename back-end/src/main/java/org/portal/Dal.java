@@ -4,14 +4,17 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.portal.configs.Form;
 import org.portal.db.Connect;
+import org.portal.db.entities.Leave;
 import org.portal.db.entities.SubmittedForm;
 import org.portal.db.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +22,8 @@ public class Dal {
     private static Logger log = LoggerFactory.getLogger(Dal.class);
     private ObjectContext dbContext;
     public Dal(){
-        this.dbContext = Connect.getConnection();
+        Connect conn = new Connect();
+        this.dbContext = conn.getConnection();
     }
 
     public boolean loginAuth(String loginId, String passwd){
@@ -91,5 +95,19 @@ public class Dal {
         newUser.setEmail(email);
         newUser.setPassword(password);
         dbContext.commitChanges();
+    }
+
+    public void addSubmission(JSONObject form, String data) throws ClassNotFoundException {
+        int form_id = (int) form.get("form_id");
+        String form_name = (String) form.get("form_name");
+        String prefix = "org.portal.db.entities.";
+        String className = prefix + form_name.substring(0, 1).toUpperCase();
+        Class formClass = Class.forName(className);
+        Field[] fields = formClass.getFields();
+        for(Field field: fields){
+            System.out.println(field);
+        }
+//        Constructor constructor = formClass.getConstructor()
+//        formObject.getFields();
     }
 }
