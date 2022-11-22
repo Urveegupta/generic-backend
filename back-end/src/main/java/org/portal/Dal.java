@@ -1,8 +1,11 @@
 package org.portal;
 
+import io.javalin.http.Context;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.query.ObjectSelect;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.portal.configs.Form;
 import org.portal.db.Connect;
@@ -15,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -97,16 +103,50 @@ public class Dal {
         dbContext.commitChanges();
     }
 
-    public void addSubmission(JSONObject form, String data) throws ClassNotFoundException {
-        int form_id = (int) form.get("form_id");
+    public void addSubmission(JSONObject form, Context ctx) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, ParseException {
+//        JSONParser parser = new JSONParser();
+//        log.info("this is data");
+//        log.info(data);
+//        JSONObject jsonData = (JSONObject) parser.parse(data);
         String form_name = (String) form.get("form_name");
         String prefix = "org.portal.db.entities.";
-        String className = prefix + form_name.substring(0, 1).toUpperCase();
+        String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
         Class formClass = Class.forName(className);
+        Object formObj = formClass.getConstructor().newInstance();
+        log.info(formObj.getClass().toString());
+
         Field[] fields = formClass.getFields();
+//        List<String> methodNames = new ArrayList<>();
+
         for(Field field: fields){
-            System.out.println(field);
+            if(Objects.equals(field.getType(), Property.class)){
+                String field_name = field.getName();
+                String[] parts = field_name.split("_");
+                String methodName = "set";
+                for(String part: parts){
+                    String newPart = part.charAt(0) + part.substring(1).toLowerCase();
+                    methodName = methodName + newPart;
+                }
+                log.info(methodName);
+                Object propValue = field.get(formObj);
+                log.info("prop value:");
+                log.info(propValue.getClass().toString());
+                Method propMethod = Property.class.getMethod("getType");
+                Object type = propMethod.invoke(propValue);
+                Class typeClass = (Class) type;
+                log.info(type.toString());
+                //type me hai
+                Method method = formClass.getMethod(methodName, typeClass);
+                String arg = ctx.req.getParameter(field_name.toLowerCase());
+                method.invoke(formObj,arg);
+//                methodNames.add(methodName);
+            }
         }
+
+        //invoke methods
+
+//        Constructor constructor = formClass.getConstructor();
+
 //        Constructor constructor = formClass.getConstructor()
 //        formObject.getFields();
     }

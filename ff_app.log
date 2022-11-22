@@ -7,11 +7,11 @@
 
           https://javalin.io/documentation
 
-[main] INFO org.eclipse.jetty.util.log - Logging initialized @327ms to org.eclipse.jetty.util.log.Slf4jLog
+[main] INFO org.eclipse.jetty.util.log - Logging initialized @345ms to org.eclipse.jetty.util.log.Slf4jLog
 [main] INFO io.javalin.Javalin - Starting Javalin ...
-[main] INFO io.javalin.Javalin - You are running Javalin 4.6.4 (released July 8, 2022. Your Javalin version is 134 days old. Consider checking for a newer version.).
+[main] INFO io.javalin.Javalin - You are running Javalin 4.6.4 (released July 8, 2022. Your Javalin version is 135 days old. Consider checking for a newer version.).
 [main] INFO io.javalin.Javalin - Listening on http://localhost:8080/
-[main] INFO io.javalin.Javalin - Javalin started in 377ms \o/
+[main] INFO io.javalin.Javalin - Javalin started in 522ms \o/
 [main] INFO org.portal.db.Connect - Received DB credentials
 [main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML configuration resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/cayenne-project.xml
 [main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML DataMap resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/datamap.map.xml
@@ -21,6 +21,7 @@
 [main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML configuration resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/cayenne-project.xml
 [main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML DataMap resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/datamap.map.xml
 [main] INFO org.portal.db.Connect - Connection established!
+[main] INFO org.portal.FlowEngine - adding handlers for formLeave
 [main] INFO org.apache.cayenne.datasource.DriverDataSource - Connecting to 'jdbc:mysql://127.0.0.1:3306/mydb' as 'root'
 [main] INFO org.apache.cayenne.datasource.DriverDataSource - +++ Connecting: SUCCESS.
 [main] INFO org.apache.cayenne.log.JdbcEventLogger - Detected and installed adapter: org.apache.cayenne.dba.mysql.MySQLAdapter
@@ -28,6 +29,62 @@
 [main] INFO org.apache.cayenne.datasource.DriverDataSource - +++ Connecting: SUCCESS.
 [main] INFO org.apache.cayenne.log.JdbcEventLogger - --- transaction started.
 [main] INFO org.apache.cayenne.log.JdbcEventLogger - SELECT t0.form_id, t0.status_id, t0.user_id, t0.submitted_form_id FROM mydb.submitted_form t0 
-[main] INFO org.apache.cayenne.log.JdbcEventLogger - === returned 0 rows. - took 61 ms.
+[main] INFO org.apache.cayenne.log.JdbcEventLogger - === returned 0 rows. - took 67 ms.
 [main] INFO org.apache.cayenne.log.JdbcEventLogger - +++ transaction committed.
-[JettyServerThreadPool-29] INFO org.portal.FlowEngine - GET handler for browsing available forms
+[JettyServerThreadPool-23] INFO org.portal.FlowEngine - POST handler for filling out form: Leave
+[JettyServerThreadPool-23] INFO org.portal.FlowEngine - data in req
+[JettyServerThreadPool-23] INFO org.portal.Dal - class org.portal.db.entities.Leave
+[JettyServerThreadPool-23] INFO org.portal.Dal - setEmail
+[JettyServerThreadPool-23] INFO org.portal.Dal - prop value:
+[JettyServerThreadPool-23] INFO org.portal.Dal - class org.apache.cayenne.exp.Property
+[JettyServerThreadPool-23] INFO org.portal.Dal - class java.lang.String
+[JettyServerThreadPool-23] INFO org.portal.Dal - setEndDate
+[JettyServerThreadPool-23] INFO org.portal.Dal - prop value:
+[JettyServerThreadPool-23] INFO org.portal.Dal - class org.apache.cayenne.exp.Property
+[JettyServerThreadPool-23] INFO org.portal.Dal - class java.time.LocalDate
+[JettyServerThreadPool-23] WARN io.javalin.Javalin - Uncaught exception
+java.lang.IllegalArgumentException: argument type mismatch
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.portal.Dal.addSubmission(Dal.java:141)
+	at org.portal.FlowEngine.lambda$addFormHandlers$2(FlowEngine.java:79)
+	at io.javalin.core.security.SecurityUtil.noopAccessManager(SecurityUtil.kt:20)
+	at io.javalin.http.JavalinServlet.addHandler$lambda-0(JavalinServlet.kt:96)
+	at io.javalin.http.JavalinServlet$lifecycle$2$1$1.invoke(JavalinServlet.kt:43)
+	at io.javalin.http.JavalinServlet$lifecycle$2$1$1.invoke(JavalinServlet.kt:43)
+	at io.javalin.http.JavalinServletHandler.executeNextTask(JavalinServletHandler.kt:99)
+	at io.javalin.http.JavalinServletHandler.queueNextTaskOrFinish$lambda-1(JavalinServletHandler.kt:85)
+	at java.base/java.util.concurrent.CompletableFuture.uniComposeStage(CompletableFuture.java:1187)
+	at java.base/java.util.concurrent.CompletableFuture.thenCompose(CompletableFuture.java:2309)
+	at io.javalin.http.JavalinServletHandler.queueNextTaskOrFinish$javalin(JavalinServletHandler.kt:85)
+	at io.javalin.http.JavalinServlet.service(JavalinServlet.kt:89)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at io.javalin.jetty.JavalinJettyServlet.service(JavalinJettyServlet.kt:58)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:799)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:554)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:233)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1624)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:233)
+	at io.javalin.jetty.JettyServer$start$wsAndHttpHandler$1.doHandle(JettyServer.kt:52)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:188)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:505)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1594)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:186)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1355)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.StatisticsHandler.handle(StatisticsHandler.java:181)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:127)
+	at org.eclipse.jetty.server.Server.handle(Server.java:516)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$1(HttpChannel.java:487)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:732)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:479)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:277)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:311)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
+	at org.eclipse.jetty.io.ChannelEndPoint$1.run(ChannelEndPoint.java:104)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:883)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1034)
+	at java.base/java.lang.Thread.run(Thread.java:833)

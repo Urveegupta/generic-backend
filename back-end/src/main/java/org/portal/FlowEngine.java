@@ -54,7 +54,7 @@ public class FlowEngine {
             log.info("GET handler for browsing available forms");
             ctx.json(list);
         });
-
+        // add handlers
         for(JSONObject form: list){
             addFormHandlers(form);
         }
@@ -67,7 +67,7 @@ public class FlowEngine {
     }
 
     private void addFormHandlers(JSONObject form){
-
+        log.info("adding handlers for form"+ form.get("form_name"));
         // handler to fill out the form
         app.post(form.get("form_name")+"/"+ HandlerPaths.PATH_TO_FILL_FORM, (ctx)->{
             log.info("POST handler for filling out form: "+ form.get("form_name"));
@@ -75,7 +75,8 @@ public class FlowEngine {
             // TODO: do
             // get field infos
             String data = ctx.req.getParameter("data");
-            dal.addSubmission(form, data);
+            log.info("data in req");
+            dal.addSubmission(form, ctx);
             ctx.result("Submitted Successfully!");
         });
     }
