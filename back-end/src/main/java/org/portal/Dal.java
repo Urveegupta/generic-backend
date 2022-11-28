@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -103,23 +104,23 @@ public class Dal {
         dbContext.commitChanges();
     }
 
-    public void addSubmission(JSONObject form, Context ctx) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, ParseException {
-//        JSONParser parser = new JSONParser();
-//        log.info("this is data");
-//        log.info(data);
-//        JSONObject jsonData = (JSONObject) parser.parse(data);
+    public void addSubmission(JSONObject form, Context ctx) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+        // create new form object using form name
         String form_name = (String) form.get("form_name");
         String prefix = "org.portal.db.entities.";
         String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
         Class formClass = Class.forName(className);
-        Object formObj = formClass.getConstructor().newInstance();
+        Object formObj = dbContext.newObject(formClass);
         log.info(formObj.getClass().toString());
 
+        //retrieve fields required by the form
         Field[] fields = formClass.getFields();
-//        List<String> methodNames = new ArrayList<>();
 
+        //populate fields
         for(Field field: fields){
             if(Objects.equals(field.getType(), Property.class)){
+                //get method to populate field
                 String field_name = field.getName();
                 String[] parts = field_name.split("_");
                 String methodName = "set";
@@ -128,26 +129,23 @@ public class Dal {
                     methodName = methodName + newPart;
                 }
                 log.info(methodName);
+
+                //create method instance
                 Object propValue = field.get(formObj);
-                log.info("prop value:");
-                log.info(propValue.getClass().toString());
+                log.info("prop value: "+ Arrays.toString(propValue.getClass().getFields()));
                 Method propMethod = Property.class.getMethod("getType");
                 Object type = propMethod.invoke(propValue);
                 Class typeClass = (Class) type;
                 log.info(type.toString());
-                //type me hai
+                //declare method parameter class types
                 Method method = formClass.getMethod(methodName, typeClass);
                 String arg = ctx.req.getParameter(field_name.toLowerCase());
+                log.info(arg);
+                //invoke method
                 method.invoke(formObj,arg);
-//                methodNames.add(methodName);
             }
         }
-
-        //invoke methods
-
-//        Constructor constructor = formClass.getConstructor();
-
-//        Constructor constructor = formClass.getConstructor()
-//        formObject.getFields();
+        //commit changes to db
+        dbContext.commitChanges();
     }
 }
