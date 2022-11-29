@@ -6,6 +6,7 @@ package org.portal;
  */
 public class Const {
 
+    public static final String LOGGED_IN = "isLoggedIn";
     public static final String USER = "KEY_USER";
     public static final String KEY_LOGIN_ID = "loginId";
     public static final String KEY_PASSWD = "password";

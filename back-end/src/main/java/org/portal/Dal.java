@@ -6,22 +6,16 @@ import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.query.ObjectSelect;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.portal.configs.Form;
 import org.portal.db.Connect;
-import org.portal.db.entities.Leave;
-import org.portal.db.entities.SubmittedForm;
 import org.portal.db.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +33,7 @@ public class Dal {
         log.info(">Authorizing login");
         List<User> list = ObjectSelect.query(User.class).select(dbContext);
         for(User user: list){
-            if(Objects.equals(user.getEmail(), loginId)){
+            if(Objects.equals(user.getEmail().toLowerCase(), loginId)){
                 if(Objects.equals(user.getPassword(), passwd)){
                     return true;
                 }
@@ -66,33 +60,33 @@ public class Dal {
         return (List<JSONObject>) jsonObject.get("PERMISSIONS");
     }
 
-    public List<SubmittedForm> loadSubmittedForms(){
-        return ObjectSelect.query(SubmittedForm.class).select(dbContext);
-    }
+//    public List<SubmittedForm> loadSubmittedForms(){
+//        return ObjectSelect.query(SubmittedForm.class).select(dbContext);
+//    }
 
     public User getUser(String email){
-        List<User> list = ObjectSelect.query(User.class).select(dbContext);
+        List<User> list = ObjectSelect.query(User.class).where(User.EMAIL.eq(email)).select(dbContext);
         for(User user: list){
-            if(Objects.equals(user.getEmail(), email)){
+            if(Objects.equals(user.getEmail().toLowerCase(), email.toLowerCase())){
                 return user;
             }
         }
         return null;
     }
 
-    public String getSubmittedFormId(SubmittedForm form){
-        return (String) form.getObjectId().getIdSnapshot().get("submitted_form_id");
-    }
-    public String getFormName(SubmittedForm form) throws IOException, ParseException {
-        int formId = form.getFormId();
-        List<JSONObject> allForms = loadForms();
-        for(JSONObject formData : allForms){
-            if(Objects.equals(formId, formData.get(Const.KEY_FORM_ID))){
-                return (String) formData.get(Const.KEY_FORM_NAME);
-            }
-        }
-        return "Couldn't find form";
-    }
+//    public String getSubmittedFormId(SubmittedForm form){
+//        return (String) form.getObjectId().getIdSnapshot().get("submitted_form_id");
+//    }
+//    public String getFormName(SubmittedForm form) throws IOException, ParseException {
+//        int formId = form.getFormId();
+//        List<JSONObject> allForms = loadForms();
+//        for(JSONObject formData : allForms){
+//            if(Objects.equals(formId, formData.get(Const.KEY_FORM_ID))){
+//                return (String) formData.get(Const.KEY_FORM_NAME);
+//            }
+//        }
+//        return "Couldn't find form";
+//    }
 
     public String loadStatusFromId(int id) throws IOException, ParseException {
         for(JSONObject status: loadStatuses()){
@@ -103,14 +97,31 @@ public class Dal {
         return "Couldn't find status";
     }
 
-    public void addUser(String username, String email, String password){
-        User newUser = dbContext.newObject(User.class);
-        newUser.setUserName(username);
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-        dbContext.commitChanges();
+    public boolean addUser(String username, String email, String password, int roleid){
+        //check if already exists
+        List<User> list = ObjectSelect.query(User.class).where(User.EMAIL.eq(email.toLowerCase())).select(dbContext);
+        if(list.isEmpty()) {
+            User newUser = dbContext.newObject(User.class);
+            newUser.setUserName(username);
+            newUser.setEmail(email.toLowerCase());
+            newUser.setPassword(password);
+            newUser.setRoleId(roleid);
+            dbContext.commitChanges();
+            return true;
+        }
+        else{
+            return false;
+        }
     }
-
+    public int getStatusfromObject(String form_name, Object formObj) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String methodName = "getStatusId";
+        String prefix = "org.portal.db.entities.";
+        String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
+        Class formClass = Class.forName(className);
+        Method method = formClass.getMethod(methodName);
+        int result = (Integer) method.invoke(formObj);
+        return result;
+    }
     public void addSubmission(JSONObject form, Context ctx) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         // create new form object using form name
@@ -148,8 +159,13 @@ public class Dal {
                 Method method = formClass.getMethod(methodName, typeClass);
                 String arg = ctx.req.getParameter(field_name.toLowerCase());
                 log.info(arg);
-                //invoke method
-                method.invoke(formObj,arg);
+                if(Objects.equals(typeClass, Integer.class)){
+                    method.invoke(formObj,Integer.parseInt(arg));
+                }
+                else{
+                    //invoke method
+                    method.invoke(formObj,arg);
+                }
             }
         }
         //commit changes to db

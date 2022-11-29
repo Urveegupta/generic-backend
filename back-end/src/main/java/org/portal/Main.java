@@ -6,7 +6,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws Exception {
 
         Javalin app = Javalin.create().start(8080);
         FlowEngine fe = new FlowEngine(app);
