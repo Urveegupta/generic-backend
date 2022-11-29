@@ -11,6 +11,10 @@
     {
       "id": 3,
       "action": "VIEW"
+    },
+    {
+      "id": 4,
+      "action": "UPDATE"
     }
   ]
 }

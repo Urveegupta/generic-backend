@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.portal.db.entities.User;
+
 public class FlowEngine {
 
     private static Logger log = LoggerFactory.getLogger(FlowEngine.class);
@@ -60,14 +62,16 @@ public class FlowEngine {
         }
 
         // add handler for all submitted forms (going through workflow)
+        
         List<SubmittedForm> submittedList = dal.loadSubmittedForms();
         for(SubmittedForm form: submittedList){
             addSubmittedFormHandlers(form);
         }
     }
 
-    private void addFormHandlers(JSONObject form){
+    private void addFormHandlers(JSONObject form) throws IOException, ParseException{
         log.info("adding handlers for form"+ form.get("form_name"));
+        
         // handler to fill out the form
         app.post(form.get("form_name")+"/"+ HandlerPaths.PATH_TO_FILL_FORM, (ctx)->{
             log.info("POST handler for filling out form: "+ form.get("form_name"));
@@ -79,6 +83,30 @@ public class FlowEngine {
             dal.addSubmission(form, ctx);
             ctx.result("Submitted Successfully!");
         });
+
+        app.get(form.get("form_name")+"/view", (ctx) -> {
+            // User currUser = ctx.sessionAttribute(Const.KEY_USER_PROFILE);
+            // int roleId = currUser.getRoleId();
+
+            // get all (say) leave forms that have been submitted
+            List<Object> allSubmittedForms = dal.getAllSubmittedForms((String)form.get("form_name"));
+            JSONObject result = new JSONObject();
+            for(int i=0; i<allSubmittedForms.size(); i++)
+            {
+                Object sForm = (Object)allSubmittedForms.get(i);
+                // convert this to (say) leave type
+
+                // get object form_id
+                int status = sForm.getStatusId();
+                if(dal.checkActionPermission(status, 3, status, 1))
+                {
+                    // form displayed on UI for the user
+                    result.put(sForm.getFormId(), sForm);
+                }
+            }
+
+            ctx.json(result);
+        });
     }
 
     private void addSubmittedFormHandlers(SubmittedForm form) throws IOException, ParseException {
@@ -89,7 +117,6 @@ public class FlowEngine {
         app.get(form_name+"/"+SubmittedFormId,ctx -> {
             int status = form.getStatusId();
             //TODO: add current user role_id
-
             // action_id for view is set to be 3
             if(dal.checkActionPermission(status, 3, status, 1))
             {
@@ -105,6 +132,17 @@ public class FlowEngine {
         // handler to update status
         app.post(form_name+"/"+SubmittedFormId+"/"+HandlerPaths.PATH_TO_UPDATE_FORM, (ctx) -> {
             //TODO: check if allowed
+            int status = form.getStatusId();
+            //TODO: add current user role_id
+            // action_id for view is set to be 3
+            if(dal.checkActionPermission(status, 3, status, 1))
+            {
+                ctx.result(dal.loadStatusFromId(status));
+            }
+            else
+            {
+                ctx.result("Not allowed to cg");
+            }
             //TODO: do
         });
     }

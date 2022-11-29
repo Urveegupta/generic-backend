@@ -182,5 +182,10 @@ public class Dal {
         return false;
     }
 
-
+    public List<Object> getAllSubmittedForms(String form_name) throws Exception{
+        String prefix = "org.portal.db.entities.";
+        String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
+        Class formClass = Class.forName(className);
+        return ObjectSelect.query(formClass).select(dbContext);
+    }
 }
