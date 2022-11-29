@@ -24,14 +24,14 @@ public abstract class _Leave extends BaseDataObject {
     public static final Property<String> NAME = Property.create("name", String.class);
     public static final Property<String> REASON = Property.create("reason", String.class);
     public static final Property<String> START_DATE = Property.create("startDate", String.class);
-    public static final Property<Integer> STATUS_ID = Property.create("statusId", Integer.class);
+    public static final Property<String> STATUS_ID = Property.create("statusId", String.class);
 
     protected String email;
     protected String endDate;
     protected String name;
     protected String reason;
     protected String startDate;
-    protected Integer statusId;
+    protected String statusId;
 
 
     public void setEmail(String email) {
@@ -84,16 +84,13 @@ public abstract class _Leave extends BaseDataObject {
         return this.startDate;
     }
 
-    public void setStatusId(int statusId) {
+    public void setStatusId(String statusId) {
         beforePropertyWrite("statusId", this.statusId, statusId);
         this.statusId = statusId;
     }
 
-    public int getStatusId() {
+    public String getStatusId() {
         beforePropertyRead("statusId");
-        if(this.statusId == null) {
-            return 0;
-        }
         return this.statusId;
     }
 
@@ -144,7 +141,7 @@ public abstract class _Leave extends BaseDataObject {
                 this.startDate = (String)val;
                 break;
             case "statusId":
-                this.statusId = (Integer)val;
+                this.statusId = (String)val;
                 break;
             default:
                 super.writePropertyDirectly(propName, val);
@@ -178,7 +175,7 @@ public abstract class _Leave extends BaseDataObject {
         this.name = (String)in.readObject();
         this.reason = (String)in.readObject();
         this.startDate = (String)in.readObject();
-        this.statusId = (Integer)in.readObject();
+        this.statusId = (String)in.readObject();
     }
 
 }
