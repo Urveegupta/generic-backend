@@ -7,6 +7,7 @@ import org.portal.db.entities.User;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class Login extends BaseHandler{
 
@@ -22,19 +23,21 @@ public class Login extends BaseHandler{
             sendErrorJson("Failed to authenticate.");
             return;
         }
-//        try {
-//            userSetup.put(Const.KEY_USER_PROFILE, ctx.sessionAttribute(Const.USER));
-//            log.info(">user setup complete");
-//        }
-//        catch (Exception ex){
-//            log.info("Failed to create user navigation");
-//            sendErrorJson("Failed to create User Navigation");
-//        }
+        try {
+            userSetup.put(Const.KEY_USER_PROFILE, ctx.sessionAttribute(Const.USER));
+            log.info(">user setup complete");
+            log.info(ctx.sessionAttribute(Const.USER));
+        }
+        catch (Exception ex){
+            log.info("Failed to create user navigation");
+            log.info(ex.toString());
+            sendErrorJson("Failed to create User Navigation");
+        }
         ctx.result("User Logged In!");
     }
 
     private void sendErrorJson(String msg) {
-        ctx.json(msg);
+        ctx.result(msg);
     }
     private boolean authenticate() {
         String loginId = ctx.req.getParameter(Const.KEY_LOGIN_ID);
@@ -44,8 +47,9 @@ public class Login extends BaseHandler{
          * Store the user profile information in session.
          */
 
-        boolean authOk = dal.loginAuth(loginId,passwd);
+        boolean authOk = dal.loginAuth(loginId.toLowerCase(),passwd);
         if (authOk) {
+            ctx.sessionAttribute(Const.LOGGED_IN, true);
             ctx.sessionAttribute(Const.USER, dal.getUser(loginId));
         }
         return authOk;

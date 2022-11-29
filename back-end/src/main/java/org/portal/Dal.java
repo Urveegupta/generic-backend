@@ -39,7 +39,7 @@ public class Dal {
         log.info(">Authorizing login");
         List<User> list = ObjectSelect.query(User.class).select(dbContext);
         for(User user: list){
-            if(Objects.equals(user.getEmail(), loginId)){
+            if(Objects.equals(user.getEmail().toLowerCase(), loginId)){
                 if(Objects.equals(user.getPassword(), passwd)){
                     return true;
                 }
@@ -71,9 +71,9 @@ public class Dal {
     }
 
     public User getUser(String email){
-        List<User> list = ObjectSelect.query(User.class).select(dbContext);
+        List<User> list = ObjectSelect.query(User.class).where(User.EMAIL.eq(email)).select(dbContext);
         for(User user: list){
-            if(Objects.equals(user.getEmail(), email)){
+            if(Objects.equals(user.getEmail().toLowerCase(), email.toLowerCase())){
                 return user;
             }
         }
@@ -103,12 +103,21 @@ public class Dal {
         return "Couldn't find status";
     }
 
-    public void addUser(String username, String email, String password){
-        User newUser = dbContext.newObject(User.class);
-        newUser.setUserName(username);
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-        dbContext.commitChanges();
+    public boolean addUser(String username, String email, String password, int roleid){
+        //check if already exists
+        List<User> list = ObjectSelect.query(User.class).where(User.EMAIL.eq(email.toLowerCase())).select(dbContext);
+        if(list.isEmpty()) {
+            User newUser = dbContext.newObject(User.class);
+            newUser.setUserName(username);
+            newUser.setEmail(email.toLowerCase());
+            newUser.setPassword(password);
+            newUser.setRoleId(roleid);
+            dbContext.commitChanges();
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public void addSubmission(JSONObject form, Context ctx) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {

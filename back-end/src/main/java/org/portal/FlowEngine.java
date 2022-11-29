@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.portal.configs.HandlerPaths;
 import org.portal.db.entities.SubmittedForm;
+import org.portal.db.entities.User;
 import org.portal.handlers.Login;
 import org.portal.handlers.Rbac;
 import org.slf4j.Logger;
@@ -42,10 +43,19 @@ public class FlowEngine {
         app.before("/secure/*", new Rbac());
         app.post("login", new Login());
         app.post("newUser", (ctx)->{
-            JSONObject obj = ctx.bodyAsClass(JSONObject.class);
-            dal.addUser(obj.get("name").toString(),obj.get("email").toString(),obj.get("password").toString());
-            ctx.result("User Added Successfully!");
+            String name = ctx.req.getParameter("name");
+            String email = ctx.req.getParameter("email");
+            String password = ctx.req.getParameter("password");
+            String roleId = ctx.req.getParameter("role_id");
+            boolean success = dal.addUser(name,email,password,Integer.parseInt(roleId));
+            if(success){
+                ctx.result("User Added Successfully!");
+            }
+            else{
+                ctx.result("Email Already Registered!");
+            }
         });
+
 
         // add handlers for all forms in the portal
         List<JSONObject> list = dal.loadForms();
@@ -77,7 +87,9 @@ public class FlowEngine {
             String data = ctx.req.getParameter("data");
             log.info("data in req");
             dal.addSubmission(form, ctx);
-            ctx.result("Submitted Successfully!");
+
+            User user = ctx.sessionAttribute(Const.KEY_USER_PROFILE);
+            ctx.result(Integer.toString(user.getRoleId()));
         });
     }
 

@@ -7,11 +7,11 @@
 
           https://javalin.io/documentation
 
-[main] INFO org.eclipse.jetty.util.log - Logging initialized @332ms to org.eclipse.jetty.util.log.Slf4jLog
+[main] INFO org.eclipse.jetty.util.log - Logging initialized @417ms to org.eclipse.jetty.util.log.Slf4jLog
 [main] INFO io.javalin.Javalin - Starting Javalin ...
 [main] INFO io.javalin.Javalin - You are running Javalin 4.6.4 (released July 8, 2022. Your Javalin version is 143 days old. Consider checking for a newer version.).
 [main] INFO io.javalin.Javalin - Listening on http://localhost:8080/
-[main] INFO io.javalin.Javalin - Javalin started in 371ms \o/
+[main] INFO io.javalin.Javalin - Javalin started in 409ms \o/
 [main] INFO org.portal.db.Connect - Received DB credentials
 [main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML configuration resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/cayenne-project.xml
 [main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML DataMap resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/datamap.map.xml
@@ -29,36 +29,5 @@
 [main] INFO org.apache.cayenne.datasource.DriverDataSource - +++ Connecting: SUCCESS.
 [main] INFO org.apache.cayenne.log.JdbcEventLogger - --- transaction started.
 [main] INFO org.apache.cayenne.log.JdbcEventLogger - SELECT t0.form_id, t0.status_id, t0.user_id, t0.submitted_form_id FROM mydb.submitted_form t0 
-[main] INFO org.apache.cayenne.log.JdbcEventLogger - === returned 0 rows. - took 31 ms.
+[main] INFO org.apache.cayenne.log.JdbcEventLogger - === returned 0 rows. - took 47 ms.
 [main] INFO org.apache.cayenne.log.JdbcEventLogger - +++ transaction committed.
-[JettyServerThreadPool-29] INFO org.portal.FlowEngine - POST handler for filling out form: Leave
-[JettyServerThreadPool-29] INFO org.portal.FlowEngine - data in req
-[JettyServerThreadPool-29] INFO org.portal.Dal - class org.portal.db.entities.Leave
-[JettyServerThreadPool-29] INFO org.portal.Dal - setEmail
-[JettyServerThreadPool-29] INFO org.portal.Dal - prop value: [public static final org.apache.cayenne.exp.Property org.apache.cayenne.exp.Property.COUNT]
-[JettyServerThreadPool-29] INFO org.portal.Dal - class java.lang.String
-[JettyServerThreadPool-29] INFO org.portal.Dal - urvee29@gmail.com
-[JettyServerThreadPool-29] INFO org.portal.Dal - setEndDate
-[JettyServerThreadPool-29] INFO org.portal.Dal - prop value: [public static final org.apache.cayenne.exp.Property org.apache.cayenne.exp.Property.COUNT]
-[JettyServerThreadPool-29] INFO org.portal.Dal - class java.lang.String
-[JettyServerThreadPool-29] INFO org.portal.Dal - 23/10/22
-[JettyServerThreadPool-29] INFO org.portal.Dal - setName
-[JettyServerThreadPool-29] INFO org.portal.Dal - prop value: [public static final org.apache.cayenne.exp.Property org.apache.cayenne.exp.Property.COUNT]
-[JettyServerThreadPool-29] INFO org.portal.Dal - class java.lang.String
-[JettyServerThreadPool-29] INFO org.portal.Dal - urvee
-[JettyServerThreadPool-29] INFO org.portal.Dal - setReason
-[JettyServerThreadPool-29] INFO org.portal.Dal - prop value: [public static final org.apache.cayenne.exp.Property org.apache.cayenne.exp.Property.COUNT]
-[JettyServerThreadPool-29] INFO org.portal.Dal - class java.lang.String
-[JettyServerThreadPool-29] INFO org.portal.Dal - bla bla
-[JettyServerThreadPool-29] INFO org.portal.Dal - setStartDate
-[JettyServerThreadPool-29] INFO org.portal.Dal - prop value: [public static final org.apache.cayenne.exp.Property org.apache.cayenne.exp.Property.COUNT]
-[JettyServerThreadPool-29] INFO org.portal.Dal - class java.lang.String
-[JettyServerThreadPool-29] INFO org.portal.Dal - 19/10/22
-[JettyServerThreadPool-29] INFO org.apache.cayenne.datasource.DriverDataSource - Connecting to 'jdbc:mysql://127.0.0.1:3306/mydb' as 'root'
-[JettyServerThreadPool-29] INFO org.apache.cayenne.datasource.DriverDataSource - +++ Connecting: SUCCESS.
-[JettyServerThreadPool-29] INFO org.apache.cayenne.log.JdbcEventLogger - --- transaction started.
-[JettyServerThreadPool-29] INFO org.apache.cayenne.log.JdbcEventLogger - INSERT INTO mydb.leave (email, end_date, name, reason, start_date) VALUES (?, ?, ?, ?, ?)
-[JettyServerThreadPool-29] INFO org.apache.cayenne.log.JdbcEventLogger - [bind: 1->email:'urvee29@gmail.com', 2->end_date:'23/10/22', 3->name:'urvee', 4->reason:'bla bla', 5->start_date:'19/10/22']
-[JettyServerThreadPool-29] INFO org.apache.cayenne.log.JdbcEventLogger - Generated PK: leave.leave_id = 2
-[JettyServerThreadPool-29] INFO org.apache.cayenne.log.JdbcEventLogger - === updated 1 row.
-[JettyServerThreadPool-29] INFO org.apache.cayenne.log.JdbcEventLogger - +++ transaction committed.

@@ -24,7 +24,7 @@
 		<db-attribute name="email" type="VARCHAR" length="255"/>
 		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="32"/>
 		<db-attribute name="role_id" type="INTEGER" length="10"/>
-		<db-attribute name="user_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="user_id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
 		<db-attribute name="user_name" type="VARCHAR" isMandatory="true" length="16"/>
 	</db-entity>
 	<obj-entity name="Leave" className="org.portal.db.entities.Leave" dbEntityName="leave">
