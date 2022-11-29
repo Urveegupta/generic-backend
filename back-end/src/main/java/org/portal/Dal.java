@@ -6,22 +6,16 @@ import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.query.ObjectSelect;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.portal.configs.Form;
 import org.portal.db.Connect;
-import org.portal.db.entities.Leave;
-import org.portal.db.entities.SubmittedForm;
 import org.portal.db.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -66,9 +60,9 @@ public class Dal {
         return (List<JSONObject>) jsonObject.get("PERMISSIONS");
     }
 
-    public List<SubmittedForm> loadSubmittedForms(){
-        return ObjectSelect.query(SubmittedForm.class).select(dbContext);
-    }
+//    public List<SubmittedForm> loadSubmittedForms(){
+//        return ObjectSelect.query(SubmittedForm.class).select(dbContext);
+//    }
 
     public User getUser(String email){
         List<User> list = ObjectSelect.query(User.class).where(User.EMAIL.eq(email)).select(dbContext);
@@ -80,19 +74,19 @@ public class Dal {
         return null;
     }
 
-    public String getSubmittedFormId(SubmittedForm form){
-        return (String) form.getObjectId().getIdSnapshot().get("submitted_form_id");
-    }
-    public String getFormName(SubmittedForm form) throws IOException, ParseException {
-        int formId = form.getFormId();
-        List<JSONObject> allForms = loadForms();
-        for(JSONObject formData : allForms){
-            if(Objects.equals(formId, formData.get(Const.KEY_FORM_ID))){
-                return (String) formData.get(Const.KEY_FORM_NAME);
-            }
-        }
-        return "Couldn't find form";
-    }
+//    public String getSubmittedFormId(SubmittedForm form){
+//        return (String) form.getObjectId().getIdSnapshot().get("submitted_form_id");
+//    }
+//    public String getFormName(SubmittedForm form) throws IOException, ParseException {
+//        int formId = form.getFormId();
+//        List<JSONObject> allForms = loadForms();
+//        for(JSONObject formData : allForms){
+//            if(Objects.equals(formId, formData.get(Const.KEY_FORM_ID))){
+//                return (String) formData.get(Const.KEY_FORM_NAME);
+//            }
+//        }
+//        return "Couldn't find form";
+//    }
 
     public String loadStatusFromId(int id) throws IOException, ParseException {
         for(JSONObject status: loadStatuses()){

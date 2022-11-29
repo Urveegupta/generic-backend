@@ -24,12 +24,14 @@ public abstract class _Leave extends BaseDataObject {
     public static final Property<String> NAME = Property.create("name", String.class);
     public static final Property<String> REASON = Property.create("reason", String.class);
     public static final Property<String> START_DATE = Property.create("startDate", String.class);
+    public static final Property<Integer> STATUS_ID = Property.create("statusId", Integer.class);
 
     protected String email;
     protected String endDate;
     protected String name;
     protected String reason;
     protected String startDate;
+    protected Integer statusId;
 
 
     public void setEmail(String email) {
@@ -82,6 +84,19 @@ public abstract class _Leave extends BaseDataObject {
         return this.startDate;
     }
 
+    public void setStatusId(int statusId) {
+        beforePropertyWrite("statusId", this.statusId, statusId);
+        this.statusId = statusId;
+    }
+
+    public int getStatusId() {
+        beforePropertyRead("statusId");
+        if(this.statusId == null) {
+            return 0;
+        }
+        return this.statusId;
+    }
+
     @Override
     public Object readPropertyDirectly(String propName) {
         if(propName == null) {
@@ -99,6 +114,8 @@ public abstract class _Leave extends BaseDataObject {
                 return this.reason;
             case "startDate":
                 return this.startDate;
+            case "statusId":
+                return this.statusId;
             default:
                 return super.readPropertyDirectly(propName);
         }
@@ -126,6 +143,9 @@ public abstract class _Leave extends BaseDataObject {
             case "startDate":
                 this.startDate = (String)val;
                 break;
+            case "statusId":
+                this.statusId = (Integer)val;
+                break;
             default:
                 super.writePropertyDirectly(propName, val);
         }
@@ -147,6 +167,7 @@ public abstract class _Leave extends BaseDataObject {
         out.writeObject(this.name);
         out.writeObject(this.reason);
         out.writeObject(this.startDate);
+        out.writeObject(this.statusId);
     }
 
     @Override
@@ -157,6 +178,7 @@ public abstract class _Leave extends BaseDataObject {
         this.name = (String)in.readObject();
         this.reason = (String)in.readObject();
         this.startDate = (String)in.readObject();
+        this.statusId = (Integer)in.readObject();
     }
 
 }

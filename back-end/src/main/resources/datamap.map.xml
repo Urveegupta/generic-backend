@@ -12,12 +12,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="255"/>
 		<db-attribute name="reason" type="VARCHAR" length="255"/>
 		<db-attribute name="start_date" type="VARCHAR" isMandatory="true" length="45"/>
-	</db-entity>
-	<db-entity name="submitted_form" catalog="mydb">
-		<db-attribute name="form_id" type="INTEGER" length="10"/>
 		<db-attribute name="status_id" type="INTEGER" length="10"/>
-		<db-attribute name="submitted_form_id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
-		<db-attribute name="user_id" type="INTEGER" length="10"/>
 	</db-entity>
 	<db-entity name="user" catalog="mydb">
 		<db-attribute name="create_time" type="TIMESTAMP" length="19"/>
@@ -33,9 +28,6 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="reason" type="java.lang.String" db-attribute-path="reason"/>
 		<obj-attribute name="startDate" type="java.lang.String" db-attribute-path="start_date"/>
-	</obj-entity>
-	<obj-entity name="SubmittedForm" className="org.portal.db.entities.SubmittedForm" dbEntityName="submitted_form">
-		<obj-attribute name="formId" type="int" db-attribute-path="form_id"/>
 		<obj-attribute name="statusId" type="int" db-attribute-path="status_id"/>
 	</obj-entity>
 	<obj-entity name="User" className="org.portal.db.entities.User" dbEntityName="user">
@@ -45,12 +37,4 @@
 		<obj-attribute name="roleId" type="int" db-attribute-path="role_id"/>
 		<obj-attribute name="userName" type="java.lang.String" db-attribute-path="user_name"/>
 	</obj-entity>
-	<db-relationship name="user" source="submitted_form" target="user">
-		<db-attribute-pair source="user_id" target="user_id"/>
-	</db-relationship>
-	<db-relationship name="submittedForms" source="user" target="submitted_form" toMany="true">
-		<db-attribute-pair source="user_id" target="user_id"/>
-	</db-relationship>
-	<obj-relationship name="user" source="SubmittedForm" target="User" deleteRule="Nullify" db-relationship-path="user"/>
-	<obj-relationship name="submittedForms" source="User" target="SubmittedForm" deleteRule="Deny" db-relationship-path="submittedForms"/>
 </data-map>

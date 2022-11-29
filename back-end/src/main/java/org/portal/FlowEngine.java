@@ -1,11 +1,9 @@
 package org.portal;
 
 import io.javalin.Javalin;
-import io.javalin.http.staticfiles.Location;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.portal.configs.HandlerPaths;
-import org.portal.db.entities.SubmittedForm;
 import org.portal.db.entities.User;
 import org.portal.handlers.Login;
 import org.portal.handlers.Rbac;
@@ -42,16 +40,15 @@ public class FlowEngine {
 //        app._conf.accessManager(Rbac::accessManager);
         app.before("/secure/*", new Rbac());
         app.post("login", new Login());
-        app.post("newUser", (ctx)->{
+        app.post("newUser", (ctx) -> {
             String name = ctx.req.getParameter("name");
             String email = ctx.req.getParameter("email");
             String password = ctx.req.getParameter("password");
             String roleId = ctx.req.getParameter("role_id");
-            boolean success = dal.addUser(name,email,password,Integer.parseInt(roleId));
-            if(success){
+            boolean success = dal.addUser(name, email, password, Integer.parseInt(roleId));
+            if (success) {
                 ctx.result("User Added Successfully!");
-            }
-            else{
+            } else {
                 ctx.result("Email Already Registered!");
             }
         });
@@ -65,22 +62,22 @@ public class FlowEngine {
             ctx.json(list);
         });
         // add handlers
-        for(JSONObject form: list){
+        for (JSONObject form : list) {
             addFormHandlers(form);
         }
 
         // add handler for all submitted forms (going through workflow)
-        List<SubmittedForm> submittedList = dal.loadSubmittedForms();
-        for(SubmittedForm form: submittedList){
-            addSubmittedFormHandlers(form);
-        }
+//        List<SubmittedForm> submittedList = dal.loadSubmittedForms();
+//        for(SubmittedForm form: submittedList){
+//            addSubmittedFormHandlers(form);
+//        }
     }
 
-    private void addFormHandlers(JSONObject form){
-        log.info("adding handlers for form"+ form.get("form_name"));
+    private void addFormHandlers(JSONObject form) {
+        log.info("adding handlers for form" + form.get("form_name"));
         // handler to fill out the form
-        app.post(form.get("form_name")+"/"+ HandlerPaths.PATH_TO_FILL_FORM, (ctx)->{
-            log.info("POST handler for filling out form: "+ form.get("form_name"));
+        app.post(form.get("form_name") + "/" + HandlerPaths.PATH_TO_FILL_FORM, (ctx) -> {
+            log.info("POST handler for filling out form: " + form.get("form_name"));
             // TODO: check if allowed
             // TODO: do
             // get field infos
@@ -92,32 +89,32 @@ public class FlowEngine {
             ctx.result(Integer.toString(user.getRoleId()));
         });
     }
-
-    private void addSubmittedFormHandlers(SubmittedForm form) throws IOException, ParseException {
-        String form_name = dal.getFormName(form);
-        String SubmittedFormId = dal.getSubmittedFormId(form);
-
-        // handler to view status
-        app.get(form_name+"/"+SubmittedFormId,ctx -> {
-            int status = form.getStatusId();
-            //TODO: add current user role_id
-
-            // action_id for view is set to be 3
-            if(dal.checkActionPermission(status, 3, status, 1))
-            {
-                ctx.result(dal.loadStatusFromId(status));
-            }
-            else
-            {
-                ctx.result("Not allowed to view");
-            }
-            
-        });
-
-        // handler to update status
-        app.post(form_name+"/"+SubmittedFormId+"/"+HandlerPaths.PATH_TO_UPDATE_FORM, (ctx) -> {
-            //TODO: check if allowed
-            //TODO: do
-        });
-    }
 }
+//    private void addSubmittedFormHandlers(SubmittedForm form) throws IOException, ParseException {
+//        String form_name = dal.getFormName(form);
+//        String SubmittedFormId = dal.getSubmittedFormId(form);
+//
+//        // handler to view status
+//        app.get(form_name+"/"+SubmittedFormId,ctx -> {
+//            int status = form.getStatusId();
+//            //TODO: add current user role_id
+//
+//            // action_id for view is set to be 3
+//            if(dal.checkActionPermission(status, 3, status, 1))
+//            {
+//                ctx.result(dal.loadStatusFromId(status));
+//            }
+//            else
+//            {
+//                ctx.result("Not allowed to view");
+//            }
+//
+//        });
+
+//        // handler to update status
+//        app.post(form_name+"/"+SubmittedFormId+"/"+HandlerPaths.PATH_TO_UPDATE_FORM, (ctx) -> {
+//            //TODO: check if allowed
+//            //TODO: do
+//        });
+//    }
+//}
