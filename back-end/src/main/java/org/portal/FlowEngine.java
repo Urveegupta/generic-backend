@@ -87,12 +87,22 @@ public class FlowEngine {
 
         // handler to view status
         app.get(form_name+"/"+SubmittedFormId,ctx -> {
-            //TODO: check if allowed
             int status = form.getStatusId();
-            ctx.result(dal.loadStatusFromId(status));
+            //TODO: add current user role_id
+
+            // action_id for view is set to be 3
+            if(dal.checkActionPermission(status, 3, status, 1))
+            {
+                ctx.result(dal.loadStatusFromId(status));
+            }
+            else
+            {
+                ctx.result("Not allowed to view");
+            }
+            
         });
 
-//        // handler to update status
+        // handler to update status
         app.post(form_name+"/"+SubmittedFormId+"/"+HandlerPaths.PATH_TO_UPDATE_FORM, (ctx) -> {
             //TODO: check if allowed
             //TODO: do

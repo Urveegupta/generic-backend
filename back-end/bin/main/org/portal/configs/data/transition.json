@@ -1,0 +1,19 @@
+{
+  "PERMITTED": [
+    {
+      "fromId": 1,
+      "toId": 2,
+      "roleId": [1,2,3]
+    },
+    {
+      "fromId": 2,
+      "toId": 3,
+      "roleId": [1,3]
+    },
+    {
+      "fromId": 2,
+      "toId": 4,
+      "roleId": [1,3]
+    }
+  ]
+}

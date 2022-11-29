@@ -1,0 +1,16 @@
+{
+  "ACTIONS": [
+    {
+      "id": 1,
+      "action": "DELETE"
+    },
+    {
+      "id": 2,
+      "action": "CREATE"
+    },
+    {
+      "id": 3,
+      "action": "VIEW"
+    }
+  ]
+}

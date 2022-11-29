@@ -5,6 +5,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.query.ObjectSelect;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.portal.configs.Form;
@@ -57,6 +58,12 @@ public class Dal {
         JSONFileReader reader = new JSONFileReader();
         JSONObject jsonObject = reader.parseFile(Const.STATUS_PATH);
         return (List<JSONObject>) jsonObject.get("STATUS");
+    }
+
+    public List<JSONObject> loadActionPermissions() throws IOException, ParseException{
+        JSONFileReader reader = new JSONFileReader();
+        JSONObject jsonObject = reader.parseFile(Const.PERMISSIONS_PATH);
+        return (List<JSONObject>) jsonObject.get("PERMISSIONS");
     }
 
     public List<SubmittedForm> loadSubmittedForms(){
@@ -148,4 +155,32 @@ public class Dal {
         //commit changes to db
         dbContext.commitChanges();
     }
+
+    /* 
+        returns True if a role is allowed to do a particular action
+    */ 
+    public boolean checkActionPermission(Integer from_status_id, Integer action_id, Integer to_status_id, Integer role_id) throws Exception {
+
+        List<JSONObject> permissions = loadActionPermissions();
+        for(JSONObject permission : permissions)
+        {
+            if(permission.get("actionId") == action_id &&
+                permission.get("statusId") == from_status_id &&
+                permission.get("newStatusId" ) == to_status_id){
+                   
+                JSONArray role_ids = (JSONArray)permission.get("roleroleId");
+                for(int i = 0; i < role_ids.size(); i++){
+                    if(role_ids.get(i) == role_id)
+                    {
+                        return true;
+                    }
+                }  
+
+            }
+        }
+
+        return false;
+    }
+
+
 }
