@@ -117,6 +117,7 @@ public class Dal {
         String methodName = "getStatusId";
         String prefix = "org.portal.db.entities.";
         String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
+        log.info("Class name: "+className);
         Class formClass = Class.forName(className);
         Method method = formClass.getMethod(methodName);
         int result = (Integer) method.invoke(formObj);
@@ -159,13 +160,8 @@ public class Dal {
                 Method method = formClass.getMethod(methodName, typeClass);
                 String arg = ctx.req.getParameter(field_name.toLowerCase());
                 log.info(arg);
-                if(Objects.equals(typeClass, Integer.class)){
-                    method.invoke(formObj,Integer.parseInt(arg));
-                }
-                else{
-                    //invoke method
-                    method.invoke(formObj,arg);
-                }
+                //invoke method
+                method.invoke(formObj,arg);
             }
         }
         //commit changes to db
