@@ -7,70 +7,39 @@
 
           https://javalin.io/documentation
 
-[main] INFO org.eclipse.jetty.util.log - Logging initialized @427ms to org.eclipse.jetty.util.log.Slf4jLog
+[main] INFO org.eclipse.jetty.util.log - Logging initialized @338ms to org.eclipse.jetty.util.log.Slf4jLog
 [main] INFO io.javalin.Javalin - Starting Javalin ...
 [main] INFO io.javalin.Javalin - You are running Javalin 4.6.4 (released July 8, 2022. Your Javalin version is 144 days old. Consider checking for a newer version.).
 [main] INFO io.javalin.Javalin - Listening on http://localhost:8080/
-[main] INFO io.javalin.Javalin - Javalin started in 596ms \o/
+[main] INFO io.javalin.Javalin - Javalin started in 459ms \o/
 [main] INFO org.portal.db.Connect - Received DB credentials
-[main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML configuration resource from file:/C:/Users/HP/Desktop/Sem7/Capstone/generic-backend/back-end/build/resources/main/cayenne-project.xml
-[main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML DataMap resource from file:/C:/Users/HP/Desktop/Sem7/Capstone/generic-backend/back-end/build/resources/main/datamap.map.xml
+[main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML configuration resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/cayenne-project.xml
+[main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML DataMap resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/datamap.map.xml
 [main] INFO org.portal.db.Connect - Connection established!
 [main] INFO org.portal.FlowEngine - >Starting the portal flow engine
 [main] INFO org.portal.db.Connect - Received DB credentials
-[main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML configuration resource from file:/C:/Users/HP/Desktop/Sem7/Capstone/generic-backend/back-end/build/resources/main/cayenne-project.xml
-[main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML DataMap resource from file:/C:/Users/HP/Desktop/Sem7/Capstone/generic-backend/back-end/build/resources/main/datamap.map.xml
+[main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML configuration resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/cayenne-project.xml
+[main] INFO org.apache.cayenne.configuration.xml.XMLDataChannelDescriptorLoader - Loading XML DataMap resource from file:/F:/sem%20infos/sem7/Capstone/work/generic-backend/back-end/build/resources/main/datamap.map.xml
 [main] INFO org.portal.db.Connect - Connection established!
 [main] INFO org.portal.FlowEngine - adding handlers for formLeave
-[JettyServerThreadPool-21] INFO org.apache.cayenne.datasource.DriverDataSource - Connecting to 'jdbc:mysql://127.0.0.1:3306/mydb' as 'root'
-[JettyServerThreadPool-21] INFO org.apache.cayenne.datasource.DriverDataSource - +++ Connecting: SUCCESS.
-[JettyServerThreadPool-21] INFO org.apache.cayenne.log.JdbcEventLogger - Detected and installed adapter: org.apache.cayenne.dba.mysql.MySQLAdapter
-[JettyServerThreadPool-21] INFO org.apache.cayenne.datasource.DriverDataSource - Connecting to 'jdbc:mysql://127.0.0.1:3306/mydb' as 'root'
-[JettyServerThreadPool-21] INFO org.apache.cayenne.datasource.DriverDataSource - +++ Connecting: SUCCESS.
-[JettyServerThreadPool-21] INFO org.apache.cayenne.log.JdbcEventLogger - --- transaction started.
-[JettyServerThreadPool-21] INFO org.apache.cayenne.log.JdbcEventLogger - SELECT t0.email, t0.end_date, t0.name, t0.reason, t0.start_date, t0.status_id, t0.leave_id FROM mydb.leave t0 
-[JettyServerThreadPool-21] INFO org.apache.cayenne.log.JdbcEventLogger - === returned 1 row. - took 32 ms.
-[JettyServerThreadPool-21] INFO org.apache.cayenne.log.JdbcEventLogger - +++ transaction committed.
-[JettyServerThreadPool-21] INFO org.portal.Dal - Class name: org.portal.db.entities.Leave
-[JettyServerThreadPool-21] WARN io.javalin.Javalin - Uncaught exception
-java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "java.lang.reflect.Method.invoke(Object, Object[])" is null
-	at org.portal.Dal.getStatusfromObject(Dal.java:123)
-	at org.portal.FlowEngine.lambda$addFormHandlers$3(FlowEngine.java:105)
-	at io.javalin.core.security.SecurityUtil.noopAccessManager(SecurityUtil.kt:20)
-	at io.javalin.http.JavalinServlet.addHandler$lambda-0(JavalinServlet.kt:96)
-	at io.javalin.http.JavalinServlet$lifecycle$2$1$1.invoke(JavalinServlet.kt:43)
-	at io.javalin.http.JavalinServlet$lifecycle$2$1$1.invoke(JavalinServlet.kt:43)
-	at io.javalin.http.JavalinServletHandler.executeNextTask(JavalinServletHandler.kt:99)
-	at io.javalin.http.JavalinServletHandler.queueNextTaskOrFinish$lambda-1(JavalinServletHandler.kt:85)
-	at java.base/java.util.concurrent.CompletableFuture.uniComposeStage(CompletableFuture.java:1187)
-	at java.base/java.util.concurrent.CompletableFuture.thenCompose(CompletableFuture.java:2309)
-	at io.javalin.http.JavalinServletHandler.queueNextTaskOrFinish$javalin(JavalinServletHandler.kt:85)
-	at io.javalin.http.JavalinServlet.service(JavalinServlet.kt:89)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
-	at io.javalin.jetty.JavalinJettyServlet.service(JavalinJettyServlet.kt:58)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
-	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:799)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:554)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:233)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1624)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:233)
-	at io.javalin.jetty.JettyServer$start$wsAndHttpHandler$1.doHandle(JettyServer.kt:52)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:188)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:505)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1594)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:186)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1355)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.StatisticsHandler.handle(StatisticsHandler.java:181)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:127)
-	at org.eclipse.jetty.server.Server.handle(Server.java:516)
-	at org.eclipse.jetty.server.HttpChannel.lambda$handle$1(HttpChannel.java:487)
-	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:732)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:479)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:277)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:311)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
-	at org.eclipse.jetty.io.ChannelEndPoint$1.run(ChannelEndPoint.java:104)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:883)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1034)
-	at java.base/java.lang.Thread.run(Thread.java:833)
+[JettyServerThreadPool-22] INFO org.apache.cayenne.datasource.DriverDataSource - Connecting to 'jdbc:mysql://127.0.0.1:3306/mydb' as 'root'
+[JettyServerThreadPool-22] INFO org.apache.cayenne.datasource.DriverDataSource - +++ Connecting: SUCCESS.
+[JettyServerThreadPool-22] INFO org.apache.cayenne.log.JdbcEventLogger - Detected and installed adapter: org.apache.cayenne.dba.mysql.MySQLAdapter
+[JettyServerThreadPool-22] INFO org.apache.cayenne.datasource.DriverDataSource - Connecting to 'jdbc:mysql://127.0.0.1:3306/mydb' as 'root'
+[JettyServerThreadPool-22] INFO org.apache.cayenne.datasource.DriverDataSource - +++ Connecting: SUCCESS.
+[JettyServerThreadPool-22] INFO org.apache.cayenne.log.JdbcEventLogger - --- transaction started.
+[JettyServerThreadPool-22] INFO org.apache.cayenne.log.JdbcEventLogger - SELECT t0.email, t0.end_date, t0.name, t0.reason, t0.start_date, t0.status_id, t0.leave_id FROM mydb.leave t0 
+[JettyServerThreadPool-22] INFO org.apache.cayenne.log.JdbcEventLogger - === returned 3 rows. - took 32 ms.
+[JettyServerThreadPool-22] INFO org.apache.cayenne.log.JdbcEventLogger - +++ transaction committed.
+[JettyServerThreadPool-22] INFO org.portal.Dal - Class name: org.portal.db.entities.Leave
+[JettyServerThreadPool-22] INFO org.portal.Dal - class java.lang.String
+[JettyServerThreadPool-22] INFO org.portal.Dal - result -> 1
+[JettyServerThreadPool-22] INFO org.portal.FlowEngine - this is it - > 1
+[JettyServerThreadPool-22] INFO org.portal.Dal - Class name: org.portal.db.entities.Leave
+[JettyServerThreadPool-22] INFO org.portal.Dal - class java.lang.String
+[JettyServerThreadPool-22] INFO org.portal.Dal - result -> 2
+[JettyServerThreadPool-22] INFO org.portal.FlowEngine - this is it - > 2
+[JettyServerThreadPool-22] INFO org.portal.Dal - Class name: org.portal.db.entities.Leave
+[JettyServerThreadPool-22] INFO org.portal.Dal - class java.lang.String
+[JettyServerThreadPool-22] INFO org.portal.Dal - result -> 3
+[JettyServerThreadPool-22] INFO org.portal.FlowEngine - this is it - > 3

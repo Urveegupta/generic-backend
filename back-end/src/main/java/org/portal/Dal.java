@@ -113,15 +113,17 @@ public class Dal {
             return false;
         }
     }
-    public int getStatusfromObject(String form_name, Object formObj) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public String getStatusfromObject(String form_name, Object formObj) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String methodName = "getStatusId";
         String prefix = "org.portal.db.entities.";
         String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
-        log.info("Class name: "+className);
         Class formClass = Class.forName(className);
         Method method = formClass.getMethod(methodName);
-        int result = (Integer) method.invoke(formObj);
-        return result;
+        method.setAccessible(true);
+        log.info(method.getReturnType().toString());
+        Object result = method.invoke(formObj);
+        log.info("result -> "+ result.toString());
+        return (String) result;
     }
     public void addSubmission(JSONObject form, Context ctx) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
@@ -194,10 +196,10 @@ public class Dal {
         return false;
     }
 
-    public List<Object> getAllSubmittedForms(String form_name) throws Exception{
+    public List getAllSubmittedForms(String form_name) throws Exception{
         String prefix = "org.portal.db.entities.";
         String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
-        Class formClass = Class.forName(className);
+        Class<?> formClass = Class.forName(className);
         return ObjectSelect.query(formClass).select(dbContext);
     }
 }

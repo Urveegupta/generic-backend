@@ -98,11 +98,13 @@ public class FlowEngine {
             JSONObject result = new JSONObject();
             for(int i=0; i<allSubmittedForms.size(); i++)
             {
-                Object sForm = (Object)allSubmittedForms.get(i);
+                Object sForm = allSubmittedForms.get(i);
                 // convert this to (say) leave type
 
-                // get object form_id
-                int status = dal.getStatusfromObject((String) form.get("form_name"),sForm);
+                // get object status id
+                String res = dal.getStatusfromObject((String) form.get("form_name"),sForm);
+                log.info("this is it - > "+res);
+                int status = Integer.parseInt(res);
                 if(dal.checkActionPermission(status, 3, status, 1))
                 {
                     // form displayed on UI for the user
