@@ -1,5 +1,5 @@
 {
   "DB_URL" : "jdbc:mysql://127.0.0.1:3306/mydb",
   "DB_USERNAME": "root",
-  "DB_PASSWORD": "habitat2001"
+  "DB_PASSWORD": "adityaddy"
 }

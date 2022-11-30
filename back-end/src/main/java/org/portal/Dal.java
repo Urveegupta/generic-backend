@@ -228,6 +228,6 @@ public class Dal {
         String prefix = "org.portal.db.entities.";
         String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
         Class<?> formClass = Class.forName(className);
-        return ObjectSelect.query(formClass).select(dbContext);
+        return (List<Object>) ObjectSelect.query(formClass).select(dbContext);
     }
 }
