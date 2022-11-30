@@ -113,15 +113,17 @@ public class Dal {
             return false;
         }
     }
-    public int getStatusfromObject(String form_name, Object formObj) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public String getStatusfromObject(String form_name, Object formObj) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String methodName = "getStatusId";
         String prefix = "org.portal.db.entities.";
         String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
         log.info("Class name: "+className);
         Class formClass = Class.forName(className);
         Method method = formClass.getMethod(methodName);
-        int result = (Integer) method.invoke(formObj);
-        return result;
+        method.setAccessible(true);
+        Object result = method.invoke(formObj);
+
+        return (String)result;
     }
     public void addSubmission(JSONObject form, Context ctx) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
@@ -171,19 +173,21 @@ public class Dal {
     /* 
         returns True if a role is allowed to do a particular action
     */ 
-    public boolean checkActionPermission(Integer from_status_id, Integer action_id, Integer to_status_id, Integer role_id) throws Exception {
+    public boolean checkActionPermission(String from_status_id, Integer action_id, String to_status_id, Integer role_id) throws Exception {
 
         List<JSONObject> permissions = loadActionPermissions();
         for(JSONObject permission : permissions)
         {
-            if(permission.get("actionId") == action_id &&
-                permission.get("statusId") == from_status_id &&
-                permission.get("newStatusId" ) == to_status_id){
-                   
-                JSONArray role_ids = (JSONArray)permission.get("roleroleId");
+
+            if( ((Long)permission.get("actionId")).intValue() == action_id &&
+                    ((permission.get("statusId"))).equals(from_status_id) &&
+                    ((permission.get("newStatusId" ))).equals(to_status_id)){
+
+                JSONArray role_ids = (JSONArray)permission.get("roleId");
                 for(int i = 0; i < role_ids.size(); i++){
-                    if(role_ids.get(i) == role_id)
+                    if(((Long)role_ids.get(i)).intValue() == role_id)
                     {
+                        log.info("fin" + role_id);
                         return true;
                     }
                 }  
@@ -192,6 +196,33 @@ public class Dal {
         }
 
         return false;
+    }
+
+    public JSONObject getJSONEntity(JSONObject form, Object obj) throws Exception{
+        String form_name = (String) form.get("form_name");
+        String prefix = "org.portal.db.entities.";
+        String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
+        Class formClass = Class.forName(className);
+
+        Field[] fields = formClass.getFields();
+        JSONObject result = new JSONObject();
+        for (Field field: fields){
+            if(Objects.equals(field.getType(), Property.class)){
+                String field_name = field.getName();
+                String[] parts = field_name.split("_");
+                String methodName = "get";
+                for(String part: parts){
+                    String newPart = part.charAt(0) + part.substring(1).toLowerCase();
+                    methodName = methodName + newPart;
+                }
+
+                Method method = formClass.getMethod(methodName);
+                //invoke method
+                Object res = (Object)method.invoke(obj);
+                result.put(field_name,res);
+            }
+        }
+        return result;
     }
 
     public List<Object> getAllSubmittedForms(String form_name) throws Exception{

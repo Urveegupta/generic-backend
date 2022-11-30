@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.portal.db.entities.User;
-
+import org.portal.db.entities.Leave;
 public class FlowEngine {
 
     private static Logger log = LoggerFactory.getLogger(FlowEngine.class);
@@ -99,15 +99,23 @@ public class FlowEngine {
             for(int i=0; i<allSubmittedForms.size(); i++)
             {
                 Object sForm = (Object)allSubmittedForms.get(i);
-                // convert this to (say) leave type
 
+                // convert this to (say) leave type
                 // get object form_id
-                int status = dal.getStatusfromObject((String) form.get("form_name"),sForm);
+
+
+                String status = dal.getStatusfromObject((String) form.get("form_name"), sForm);
+                log.info("stat: "+ status);
                 if(dal.checkActionPermission(status, 3, status, 1))
                 {
+                    log.info("success");
+                    log.info(sForm.toString());
                     // form displayed on UI for the user
-                    result.put(i, sForm);
+                    JSONObject obj = dal.getJSONEntity(form,sForm);
+                    result.put(i, obj);
                 }
+
+
             }
 
             ctx.json(result);
