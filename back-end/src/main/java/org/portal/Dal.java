@@ -117,7 +117,6 @@ public class Dal {
         String methodName = "getStatusId";
         String prefix = "org.portal.db.entities.";
         String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
-        log.info("Class name: "+className);
         Class formClass = Class.forName(className);
         Method method = formClass.getMethod(methodName);
         method.setAccessible(true);
@@ -228,7 +227,7 @@ public class Dal {
     public List<Object> getAllSubmittedForms(String form_name) throws Exception{
         String prefix = "org.portal.db.entities.";
         String className = prefix + form_name.substring(0, 1).toUpperCase() + form_name.substring(1);
-        Class formClass = Class.forName(className);
+        Class<?> formClass = Class.forName(className);
         return ObjectSelect.query(formClass).select(dbContext);
     }
 }
